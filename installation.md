@@ -27,8 +27,50 @@ sum(rate(container_network_receive_bytes_total{namespace="default"}[5m])) by (po
 sum(rate(container_network_transmit_bytes_total{namespace="default"}[5m])) by (pod)
 
 ```
-
-# Connect AKS
+## 4. Connect AKS
 ```
 az aks get-credentials --resource-group jenkins --name my-k8s-cluster
 ```
+
+## 5. Install and configure SonarQube (Master machine)
+```
+docker run -itd --name SonarQube-Server -p 9000:9000 sonarqube:lts-community
+```
+- **Install and Configure ArgoCD (Master Machine)**
+  - **Create argocd namespace**
+     ```
+      kubectl create namespace argocd
+     ```
+  - **Apply argocd manifest**
+     ```
+      kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+     ```
+
+  - **Make sure all pods are running in argocd namespace**
+     ```
+      watch kubectl get pods -n argocd
+     ```
+
+  - **Install argocd CLI**
+    ```
+      sudo curl --silent --location -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/v2.4.7/argocd-linux-amd64
+    ```
+
+  - **Provide executable permission**
+      ```
+      sudo chmod +x /usr/local/bin/argocd
+      ```
+
+  - **Check argocd services**
+      ```
+      kubectl get svc -n argocd
+      ```
+
+  - **Change argocd server's service from ClusterIP to NodePort**
+    ```
+      kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
+    ```
+  - **Confirm service is patched or not**
+    ```
+      kubectl get svc -n argocd
+    ```
