@@ -74,3 +74,7 @@ docker run -itd --name SonarQube-Server -p 9000:9000 sonarqube:lts-community
     ```
       kubectl get svc -n argocd
     ```
+  - **Fetch the initial password of argocd server**  
+    ```
+      kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+    ```
