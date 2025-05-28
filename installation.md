@@ -78,3 +78,11 @@ docker run -itd --name SonarQube-Server -p 9000:9000 sonarqube:lts-community
     ```
       kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
     ```
+## 6. Install Trivy (Jenkins Worker)
+  ```
+    sudo apt-get install wget apt-transport-https gnupg lsb-release -y
+    wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+    echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+    sudo apt-get update -y
+    sudo apt-get install trivy -y
+  ```
