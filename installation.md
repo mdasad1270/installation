@@ -31,6 +31,9 @@ sum(rate(container_network_transmit_bytes_total{namespace="default"}[5m])) by (p
 ```
 az aks get-credentials --resource-group jenkins --name my-k8s-cluster
 ```
+```
+   sudo snap install kubectl --classic
+```
 
 ## 5. Install and configure SonarQube (Master machine)
 ```
